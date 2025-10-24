@@ -1,0 +1,432 @@
+
+https://medium.com/@veenaraofr/java8-stream-api-commonly-asked-questions-about-employee-highest-salary-99c21cec4d98
+
+	to intoduce concise code base with the help of functional programming 
+	Functional programming is a programming style 
+	where one applies pure functions in sequence to solve complex problems. 
+
+Lambda expression is an anonymous function ( without name, return type and 
+											access modifier and having one lambda symbol->)
+Lambda expressions can only be applied to abstract method of functional interface.
+
+java 8 new features :=
+	Lambda Expression
+	Stream API
+	Default methods
+	Functional Interface
+	Optional
+	Method references
+	Date API
+
+advantages of using Java 8 :=
+	More compact code
+	Less boilerplate code
+	More readable and reusable code
+	More testable code
+	Parallel operations
+	
+fnctional Interface:=(single abstract mehtod) , @functionalInterface
+Functional interfaces eg : Comparable, Runnable , Comparator
+
+The default methods were introduced to provide backward compatibility so that existing interfaces can use the 
+lambda expressions without implementing the methods in the implementation class
+
+lambda expression
+	Lambda expression helps us to write our code in functional style.
+	It provides a clear and concise way to implement functionalInterface by using an expression.
+
+	Why use Lambda Expression
+		To provide the implementation of Functional interface.
+		Less coding.
+		Enable to treat functionality as a method argument, or code as data.
+		A function that can be created without belonging to any class.
+		A lambda expression can be passed around as if it was an object and executed on demand.
+	
+	advantage of lambda over anonymous class or function?
+		It can implement an interface that contains any number of abstract methods.	
+		but lambda can implement an interface which contains a single abstract methods.
+		Java lambda expression is treated as a function, so compiler does not create .class file.
+		Memory allocation is on demand, whenever we are creating an object. 
+		but lambda resides in a permanent memory of JVM.
+	
+	AnonymousInner class:=
+		Person p = new Person(){  
+			void eat(){System.out.println("nice fruits");}  
+		};  
+
+		A class is created, but its name is decided by the compiler, which extends the Person class and provides the implementation of the eat() method.
+		An object of the Anonymous class is created that is referred to by 'p,' a reference variable of Person type.
+		
+==========================================================================================================================================
+As we know Functional interface is an interface with Exactly One Single Abstract method and can have multiple Static or default methods.
+Java can implicitly identify functional interface but still you can also annotate it with @FunctionalInterface .
+It just give you the security that in case if you by mistake add 2 abstract methods then Compiler will throw compile time error.
+
+Method Reference :
+				Method reference is replacement of lambda expressions. 
+				It is used to refer method of Functional interface to an existing method. Mainly it is used for code reusability. 
+
+Functional Interface’s Abstract method can be mapped to specific existing method using double colon operator (::) . This is Method reference.
+Hence Method reference is an alternative to Lambda expressions.
+===================================================================================================================================================
+Predicates:= 
+	Predicate is a predefined Functional Interface (Having only 1 abstract method test(T t))
+	Whenever we want to check some boolean condition then you can go for Predicates.
+
+	Three ways to join predicate :
+		And
+		Or
+		Negate
+		List<String> result = names.stream()
+							.filter(predicate1.or(predicate2.negate()))
+							.collect(Collectors.toList());
+
+
+Functions:=
+	Function is also a predefined Functional Interface (Having only 1 abstract method apply(T t)).
+
+	There are two ways to combine functions:
+		f1.andThen(f2).apply(Input);  - first f1 then f2
+		f1.compose(f2).apply(Input)  - first f2 then f1
+
+Consumer := 
+	It will consume Item. Consumers never return anything (never supply), they just consume.(method -> accept(T t))
+
+Consumer Chaining :
+   andThen .
+   No compose() in consumer.
+
+ c1.andThen(c2).accept(Input);  - first c1 then c2
+
+Supplier :=
+It will just supply required objects and will not take any input
+Its always going to supply never consume / take any input.
+
+EG : always supply me current date.
+No chaining as no input is given to this. Only it gives u output.
+
+Advantages:
+Write once, use anywhere.
+Code Reusability
+
+BiConsumer, BiPredicate, Bi Function  :
+ What if we need 2 arguments for operation?
+ Then we need Bi XYZ Functional Interfaces.
+
+There is no input in supplier so no 1 or 2 Input arguments needed. Hence no BiSupplier.
+
+There are no TriPredicate or TriFunction etc.
+No QuadPredicate No QuadFunction.
+Java 8 has inbuilt Functional interfaces that can take only 1 or 2 arguments no more.
+
+===================================================================================================================================================
+Stream api :=  used to Process collection object ;
+			   lazy processing
+			   can be processed only once
+
+	A stream in Java is a sequence of objects that supports various methods 
+		which can be pipelined to produce the desired result. 						
+
+	A stream is not a data structure instead it takes input from the Collections, Arrays or I/O channels.
+	
+	Streams don’t change the original data structure, they only provide the result as per the pipelined methods.
+	
+	Each intermediate operation is lazily executed and returns a stream as a result, 
+	hence various intermediate operations can be pipelined. 
+	Terminal operations mark the end of the stream and return the result.
+
+	intermediate- return another stream ->   filer, map , distinct, sorted , limit , skip
+	terminal - return non stream value -> foreach(), count() ,
+	
+	Streams are lazy because intermediate operations are not evaluated until terminal operation is invoked.
+	Each intermediate operation creates a new stream, stores the provided operation/function and return the new stream.
+	The pipeline accumulates these newly created streams.
+	The time when terminal operation is called, traversal of streams begins and the associated function is performed one by one.
+
+	The lazy evaluation used by Java streams means that the filter() method only processes the elements of the stream as they are needed, 
+	rather than processing all the elements at once. This can save time and memory, especially for large collections of data.
+	
+Advatanges: 
+	One of the biggest advantages of Stream API is that it allows for parallel processing of collections,
+	which can significantly speed up operations on large data sets. 
+	To take advantage of this feature, you can use the ‘parallelStream()’ method instead of ‘stream()’ to create a parallel stream.
+	
+	If we want to process bulk objects of collection then go for streams concept.
+	Way to operate on collection in java 8 is Stream.
+	Its a special iterator class that allows processing collections of objects in a functional manner.
+
+Stream s = collectionObject.stream();
+
+Collect - 
+If we want to collect elements of stream after filtering or mapping and add them to the required collection
+Count - 
+If we want to count how many elements are there in collection that satisfy given condition 
+
+sorted - 
+If we want to sort elements inside a stream use this sorted() method.
+We can sort based on default natural sorting order 
+If we want to sort using customized sorting order then use comparator.
+
+Comparator 
+If we want to sort using customized sorting order then use comparator.
+
+Min Max-  ,min().get() ;
+Min(Comparator)  will return the minimum value based on the defined comparator 
+Max(Comparator)  will return the maximum value based on the defined comparator
+
+Foreach
+forEach() is a method . 
+All methods that we saw till now returned something, like min max value, sorted collection, etc
+This method does not return anything.
+Rather This method takes lambda expression as argument and apply that lambda expression to each element present in that stream.
+
+toArray - stream to object array  
+
+of() - 
+Stream concept is not applicable just for the collections it’s also applicable for “ANY GROUP OF VALUE”.
+Even for arrays you can use stream.
+Stream.Of() this method can take any group of values and convert them to stream so that multiple stream operations can be applied to it.
+
+Parallel Stream
+
+Its meant to utilize multiple cores of processor.
+Till Now our java code has 1 stream of processing where it executes sequentially.
+But when you use parallel streams, we divide code into multiple streams that executes parallely ,
+on separate cores and final result is the outcome of individual cores outcomes combined.
+=====================================================================================================================================================================================================
+ double totalPrice3 = productsList.stream().collect(Collectors.summingDouble(product->product.price));
+
+ Product productA = productsList.stream().max((product1, product2)->product1.price > product2.price ? 1: -1).get();  
+
+ long count = productsList.stream().filter(product->product.price<30000).count();  			
+
+ map.entrySet().stream().forEach(e -> System.out.println(e.getKey() + ":" + e.getValue()));
+
+ Map<Integer,String> productPriceMap = productsList.stream().collect(Collectors.toMap(p->p.id, p->p.name));  	  
+
+ List<String> sortedList = list.stream().sorted().collect(Collectors.toList());
+					
+ Duplicate no in array :
+    numbers.stream().filter(i -> Collections.frequency(numbers, i) >1)
+                .collect(Collectors.toSet()).forEach(System.out::println);
+				
+List<String> listWithDuplicates = Arrays.asList("apple", "banana", "orange", "banana", "pear", "apple", "orange");
+List<String> listWithoutDuplicates = listWithDuplicates.stream().distinct().collect(Collectors.toList());
+
+====================================================================================================
+peek  > support debugging
+reduce - > convert to single value 
+	float totalPrice2 = productsList.stream()  
+									.map(product->product.price)  
+									.reduce(0.0f,Float::sum); 
+
+=================================================*****************************=======================================================================
+
+The groupingBy() method returns a Collector implementing a “GROUP BY” operation on Stream elements and returns the result as a Map.
+				
+Map<Department, List<Person>> map  =   persons.stream().collect(Collectors.groupingBy(Person::department));
+
+Map<String, Integer> result        =   items.stream().collect(Collectors.groupingBy(Item::getName, 
+																												Collectors.summingInt(Item::getQty)));
+
+Map<Department, List<Integer>> map = persons.stream().collect(Collectors.groupingBy(Person::department, 
+																												Collectors.mapping(Person::id, toList())));
+
+Map<Object, List<Integer>> map   = persons.stream().collect(Collectors.groupingBy(person -> newPair<>(person.salary(), 																													person.department()),
+																						 						Collectors.mapping(	Person::id, toList())));
+
+Map<Department, Long> map          = persons.stream().collect(Collectors.groupingBy(Person::department, counting()));
+
+=================================================*****************************======================================================================================================================
+			Map vs FlatMap
+
+The Stream.map() function performs map functional operation i.e.
+ it takes a Stream and transforms it to another new Stream.
+It applies a function on each element of Stream and stores return value into new Stream. 
+The map operation takes a Function, which is called for each value in the input stream and produces one result value, which is sent to the output stream.
+
+
+Flat Map:
+	Is the combination of a map and a flat operation
+	This means you first apply the map function and then flattens the result.
+	The key difference is the function used by map operation returns a Stream of values or a list of values rather than a single value,
+	that's why we need flattening. When you flat a Stream of Stream, it gets converted into Stream of values.
+	
+	To understand what flattening a stream consists in, consider a structure like [ [1,2,3],[4,5,6],[7,8,9] ] which has "two levels". 
+	It's basically a big List containing three more List.  
+	Flattening this means transforming it in a "one level" structure e.g. [ 1,2,3,4,5,6,7,8,9 ] i.e. just one list.
+
+In short,
+	Before flattening - Stream of List of Integer
+	After flattening - Stream of Integer
+
+// Creating a List of Strings
+    List<String> list = Arrays.asList("5.6", "7.4", "4", "1", "2.3");
+
+// Using Stream flatMap(Function mapper)
+   list.stream().flatMap(num -> Stream.of(num)).forEach(System.out::println);
+
+List<Person> people = new ArrayList<>();
+people.add(new Person("Alice", Arrays.asList("reading", "running")));
+people.add(new Person("Bob", Arrays.asList("swimming", "singing", "hiking")));
+people.add(new Person("Charlie", Arrays.asList("cooking", "gardening")));
+
+List<String> allHobbies = people.stream()
+                                 .flatMap(p -> p.getHobbies().stream())
+                                 .collect(Collectors.toList());
+
+=====================================================================================================================================================================================================
+			SHORT CIRCUIT OPERATION
+
+Java 8 stream intermediate and terminal operations both can be short circuiting.
+Intermediate - limit()
+Terminal - findFirst(), findAny(), anyMatch(), allMatch(), noneMatch()
+
+Stream limit(long N):
+ This method takes one (long N) as an argument and returns a stream of size no more than N
+ Where N is the number of elements the stream should be limited to and this function returns new stream as output.
+
+Use Java 8 Stream.limit() method to retrieve only the first n objects and setting the maximum size. And it ignores the remaining values after size n. 
+Stream.limit(long maxSize) returns a Stream of objects.
+As soon as limit() reaches the maximum number of items, it doesn't consume any more items and simply returns the resulting stream.
+Hence, we say that limit() is a short-circuiting operation.
+
+limit() returns the first n elements in the encounter order and not just any n elements.
+This is an intermediate operation.
+This is a good choice when working with infinite streams or infinite values.
+limit() method is invoked after calling the terminal operation such as count() or collect() methods.
+This returns a stream of elements with the size or max limit given.
+This works well in sequential streams. Not suggested using in the parallel streams such as larger or higher in size.
+maxSize can not be negative. If negative then it will throw IllegalArgumentException.
+
+Optional findFirst():
+Returns the very first element (wrapped in Optional object) of this stream and before traversing the other.
+
+
+findAny():
+Returns an Optional instance which wraps any and only one element of the stream.
+
+The behavior of this operation is explicitly nondeterministic; it is free to select any element in the stream. 
+This is to allow for maximal performance in parallel operations; the cost is that multiple invocations on the same source may not return the same result.
+(If a stable result is desired, use findFirst() instead.
+For a sequential stream there won't be any difference between 'findFirst' and 'findAny'. But for a parallel stream findAny will return 'any' element rather than waiting for the 'first' element.
+
+boolean anyMatch():
+Tests whether any elements of this stream match the provided predicate. This terminal method will return as soon as it finds the match and will not transverse all 
+the remaining elements to apply the predicate.
+
+boolean allMatch():
+Tests whether all elements match the provided predicate. It may return early with false result when any element doesn't match first.
+
+boolean noneMatch():
+Tests whether no elements of this stream match the provided predicate. It may return early with false result when any element matches the provided predicate first.
+
+=========================================================================================================================================================================================
+		OPTIONAL CLASS
+
+Optional Class was introduced in java 8 to to avoid NullPointerException in java.
+
+We can use the Optional class to wrap our data and avoid the classical null checks and some of the try-catch blocks.
+As a result, we’ll be able to chain method calls and have more fluent, functional code.
+
+NullPointerException is a term that every Java programmer is familiar with. It has the potential to cause your code to crash.
+
+It's also difficult to avoid without employing a lot of null tests. To address this, Java 8 added a new class Optional to the java.util package. 
+
+It can aid in the creation of clean code that avoids the use of excessive null checks. 
+We can define alternate values to return or alternate code to run by using Optional. 
+This makes the code more readable because the developer can now see the previously hidden truths.
+
+Optional is a new class in the java.util package that was introduced in Java 8. 
+It's used to show whether a value is present or not. The key benefit of this new construct is that it eliminates the need for excessive null checks and NullPointerException. 
+It prevents NullPointerExceptions at runtime and aids in the development of clean and tidy Java APIs and applications. 
+It's a Container that can only hold one value, just like Collections and arrays.
+
+Java 8's Benefits Optional:
+Null checks aren't necessary.
+NullPointerException is no longer thrown at runtime.
+We can create APIs that are neat and tidy.
+There will be no more. Code for a boiler plate
+
+Optional.isEmpty()
+Optional.isPresent()
+
+Optional.of()
+Optional.ofNullable()
+Optional.ifPresent()
+Optional.ifPresentOrElse()
+=========================================================================================================================================================================================Person p=new Person(){  
+ageList.stream().mapToInt(x->x).summaryStatistics().getMin()
+ageList.stream().mapToInt(x->x).summaryStatistics().getMax()
+ageList.stream().mapToInt(x->x).summaryStatistics().getCount()
+ageList.stream().mapToInt(x->x).summaryStatistics().getAverage()
+ageList.stream().mapToInt(x->x).summaryStatistics().getSum()
+
+========================================================================================================================
+	string word seperated by comma
+	collect(Collectors.joining(", "))
+========================================================================================================================
+			JVM metaspace
+1: HEAP Area 
+2: Method Area
+3: stack
+4: Native method Stack
+5: PC register
+
+Heap area is one of the most important memory areas of JVM. Here, all the java objects are stored.
+The heap is created when the JVM starts. The heap is generally divided into two parts. That is:
+ 
+1: Young Generation(Nursery): All the new objects are allocated in this memory. Whenever this memory gets filled, 
+	the garbage collection is performed. This is called as Minor Garbage Collection.
+2: Old Generation: All the long lived objects which have survived many rounds of minor garbage collection is stored in this area.
+	Whenever this memory gets filled, the garbage collection is performed. This is called as Major Garbage Collection.
+
+PermGen Memory: 
+ This is a special space in java heap which is separated from the main memory where all the static content is stored in this section.
+ Here, garbage collection also happens like any other part of the memory. String pool was also part of this memory before Java 7.
+ Method Area is a part of space in the PermGen and it is used to store the class structure and the code for methods and constructors. 
+ The biggest disadvantage of PermGen is that it contains a limited size which leads to an OutOfMemoryError.
+ The default size of PermGen memory is 64 MB on 32-bit JVM and 82 MB on the 64-bit version. Due to this, JVM had to change the size of this 
+ memory by frequently performing Garbage collection which is a costly operation. Java also allows to manually change the size of the PermGen memory. 
+ However, the PermGen space cannot be made to auto increase. So, it is difficult to tune it. And also, the garbage collector is not efficient enough to clean the memory. 
+
+ Due to the above problems, PermGen has been completely removed in Java 8. 
+ In the place of PermGen, a new feature called Meta Space has been introduced. 
+ MetaSpace grows automatically by default. Here, the garbage collection is automatically triggered 
+ when the class metadata usage reaches its maximum metaspace size. 
+ ===================================================================================================
+ Comparable-> int compareTo(Employee e)
+ Comparator => int compare(Employee e1 , employee e2)
+ 
+ ===================================================================================================
+ Marker Interface -> A marker interface is an interface that doesn't have any methods or constants inside it.
+					It provides run-time type information about objects, 
+					so the compiler and JVM have additional information about the object
+				Ex : cloneable , Serializable 
+				=============================================================
+				
+
+// Sort by name and then by salary in ascending order
+List<Employee> sortedByNameAndSalaryAsc = employees.stream()
+					                				.sorted(Comparator.comparing(Employee::getName)
+					                        	.thenComparingDouble(Employee::getSalary))
+					                				.collect(Collectors.toList());
+
+
+        List<String> list = new ArrayList<>();
+        list.add("apple");
+        list.add("banana");
+        list.add("apple");
+        list.add("orange");
+        list.add("banana");
+        list.add("grape");
+
+        Set<String> uniqueElements = new HashSet<>();
+        Set<String> duplicates = new HashSet<>();
+
+        for (String element : list) {
+            if (!uniqueElements.add(element)) { // If add returns false, it's a duplicate
+                duplicates.add(element);
+            }
+        }
+        System.out.println("Duplicate elements: " + duplicates);
