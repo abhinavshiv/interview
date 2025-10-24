@@ -1,0 +1,191 @@
+
+interface Square {
+    int calculate(int x);
+}
+
+class Geeks {
+    public static void main(String args[]) {
+        int a = 5;
+
+        // lambda expression to define the calculate method
+        Square s = (int x) -> x * x;
+
+        // parameter passed and return type must be same as defined in the prototype
+        int ans = s.calculate(a);
+        System.out.println(ans);
+    }
+}
+
+===========================================================================
+        // Calculate the sum using Arrays.stream() and sum()
+        int sum = Arrays.stream(numbers).sum();
+
+
+============================================================================
+import java.util.*;
+import java.util.stream.*;
+import java.util.function.*;
+
+public class Main {
+    public static void main(String[] args) {
+      System.out.println("Hello, World!");
+      // words with thier frequency
+      List<String> list = Arrays.asList("code", "decode", "code" , "hi" );        
+      Map<String , Long> map = list.stream().
+                                    collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
+
+      map.entrySet().stream().forEach(e-> System.out.println(e.getKey()+" : "+ e.getValue()));
+
+
+      List<Integer> list2 = Arrays.asList(10,20,18,10,30,22,24,18 );  
+      Map<Integer , Long> map2 = list2.stream()
+                                        .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
+      map2.entrySet().stream().forEach(e-> System.out.println(e.getKey()+" : "+ e.getValue()));
+      
+      
+      String str = "repeated";
+      Character result =  str.chars().mapToObj(i -> Character.toLowerCase((char) i))  
+             .collect(Collectors.groupingBy(Function.identity(), LinkedHashMap::new, Collectors.counting())) // store in a LinkedHashMap with the count
+             .entrySet().stream()                  
+             .filter(entry -> entry.getValue() == 1L)  
+             .map(entry -> entry.getKey())              
+             .findFirst().get();   
+             
+       System.out.println(result+" ");  
+
+       //====================================
+     List<Integer> list = Arrays.asList(71, 18, 42, 21, 67, 32, 95, 14, 56, 87);
+     Map<Boolean , List<Integer>> map = list.stream().collect(Collectors.partitioningBy(x->x%2==0));
+     
+     for(Entry<Boolean , List<Integer>> e : map.entrySet()){
+       if(e.getKey())
+         System.out.println("even number");
+        else
+         System.out.println("odd number");
+       
+       for(int i:e.getValue()){
+         System.out.println(i);
+       }
+     }
+
+    //====================================
+    "abc".chars().map(x -> (char)x)
+                .forEach(System.out::println);
+                // Output:
+                // 97
+                // 98
+                // 99
+
+    "abc".chars().mapToObj(x -> (char)x)
+                .forEach(System.out::println);
+                // Output:
+                // a
+                // b
+                // c
+
+    //====================================
+
+        String s1 = "RaceCar";
+        String s2 = "CarRace";
+         
+        s1 = Stream.of(s1.split("")).map(String::toUpperCase).sorted().collect(Collectors.joining());        
+        s2 = Stream.of(s2.split("")).map(String::toUpperCase).sorted().collect(Collectors.joining());
+         
+
+    //====================================
+
+        int i = 15623;
+         
+        Integer sumOfDigits = Stream.of(String.valueOf(i).split("")).collect(Collectors.summingInt(Integer::parseInt));
+      
+     ======================================================================================================================== 
+//    Comparator<User> fullNameComparator = Comparator.comparing(User::firstName).thenComparing(User::lastName);
+
+    //====================================
+          // check prime number
+      System.out.println(isPrime(10)+" ");
+
+  }
+  
+  public static boolean isPrime(int num){
+    return num>1 && IntStream.range(2,num).noneMatch(n->num%n==0);
+  }
+}
+
+        char tempArray[] = inputString.toCharArray();
+        Arrays.sort(tempArray);
+        new String(tempArray);
+
+============================================================================================================================================================================
+ double totalPrice3 = productsList.stream().collect(Collectors.summingDouble(product->product.price));
+
+ Product productA = productsList.stream().max((product1, product2)->product1.price > product2.price ? 1: -1).get();
+
+ long count = productsList.stream().filter(product->product.price<30000).count();           
+
+ Map<Integer,String> productPriceMap = productsList.stream().collect(Collectors.toMap(p->p.id, p->p.name));       
+
+ List<String> sortedList = list.stream().sorted().collect(Collectors.toList());
+                    
+
+ Duplicate no in array :
+
+    List<Integer> list3 = Arrays.asList(10,20,18,10,30,22,24,18 ); 
+    Set<Integer> set = new HashSet<Integer>();
+    Set<Integer> li = list3.stream().filter(n->!set.add(n)).collect(Collectors.toSet());
+                        or 
+
+    Set<Integer> li = numbers.stream().filter(i -> Collections.frequency(numbers, i) >1).collect(Collectors.toSet());
+
+List<String> listWithDuplicates = Arrays.asList("apple", "banana", "orange", "banana", "pear", "apple", "orange");
+List<String> listWithoutDuplicates = listWithDuplicates.stream().distinct().collect(Collectors.toList());
+
+
+=================================================*****************************=======================================================================
+
+The groupingBy() method returns a Collector implementing a “GROUP BY” operation on Stream elements and returns the result as a Map.
+
+Map<Department, List<Person>> map  = persons.stream().collect(Collectors.groupingBy(Person::department));
+
+Map<String, Integer> result = items.stream().collect(
+                                            Collectors.groupingBy(Item::getName, Collectors.summingInt(Item::getQty)));
+
+Map<Department, List<Integer>> map = persons.stream().collect(
+                                    Collectors.groupingBy(Person::department, Collectors.mapping(Person::id, toList())));
+
+Map<Object, List<Integer>> map     = persons.stream().collect(
+                                    Collectors.groupingBy(person -> new Pair<>(person.salary(), person.department()), 
+                                                                            Collectors.mapping(Person::id, toList())));
+
+Map<Department, Long> map          = persons.stream().collect(Collectors.groupingBy(Person::department, counting()));
+
+============================================================================================================================================================================
+
+// Creating a List of Strings
+    List<String> list = Arrays.asList("5.6", "7.4", "4", "1", "2.3");
+
+// Using Stream flatMap(Function mapper)
+   list.stream().flatMap(num -> Stream.of(num)).forEach(System.out::println);
+
+List<Person> people = new ArrayList<>();
+people.add(new Person("Alice", Arrays.asList("reading", "running")));
+people.add(new Person("Bob", Arrays.asList("swimming", "singing", "hiking")));
+people.add(new Person("Charlie", Arrays.asList("cooking", "gardening")));
+
+List<String> allHobbies = people.stream()
+                                 .flatMap(p -> p.getHobbies().stream())
+                                 .collect(Collectors.toList());
+
+============================================================================================================================================================================
+    Arrays.fill(arr , 1);
+
+    Comparable-> int compareTo(Employee e)
+    
+    Comparator => int compare(Employee e1 , employee e2)
+ 
+====================================================================================================
+peek  > support debugging
+reduce - > convert to single value 
+    float totalPrice2 = productsList.stream()  
+                                    .map(product->product.price)  
+                                    .reduce(0.0f,Float::sum); 
