@@ -28,7 +28,7 @@ import java.util.function.*;
 
 public class Main {
     public static void main(String[] args) {
-      System.out.println("Hello, World!");
+      System.out.println("Hello, World! of java 8");
         List<String> list = Arrays.asList("code", "decode", "code" , "hi" );  
        list.stream().collect(Collectors.groupingBy(Function.identity(), Collectors.counting()))
         .entrySet().stream().forEach(e -> System.out.println(e.getKey()+" : "+ e.getValue()));
