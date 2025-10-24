@@ -29,29 +29,20 @@ import java.util.function.*;
 public class Main {
     public static void main(String[] args) {
       System.out.println("Hello, World!");
-      // words with thier frequency
-      List<String> list = Arrays.asList("code", "decode", "code" , "hi" );        
-      Map<String , Long> map = list.stream().
-                                    collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
+        List<String> list = Arrays.asList("code", "decode", "code" , "hi" );  
+       list.stream().collect(Collectors.groupingBy(Function.identity(), Collectors.counting()))
+        .entrySet().stream().forEach(e -> System.out.println(e.getKey()+" : "+ e.getValue()));
+        
+       List<Integer> list2 = Arrays.asList(10,20,18,10,30,22,24,18 ); 
+       list2.stream().collect(Collectors.groupingBy(Function.identity(), Collectors.counting()))
+        .entrySet().stream().forEach(e-> System.out.println(e.getKey()+" : "+ e.getValue()));
 
-      map.entrySet().stream().forEach(e-> System.out.println(e.getKey()+" : "+ e.getValue()));
-
-
-      List<Integer> list2 = Arrays.asList(10,20,18,10,30,22,24,18 );  
-      Map<Integer , Long> map2 = list2.stream()
-                                        .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
-      map2.entrySet().stream().forEach(e-> System.out.println(e.getKey()+" : "+ e.getValue()));
       
       
-      String str = "repeated";
-      Character result =  str.chars().mapToObj(i -> Character.toLowerCase((char) i))  
-             .collect(Collectors.groupingBy(Function.identity(), LinkedHashMap::new, Collectors.counting())) // store in a LinkedHashMap with the count
-             .entrySet().stream()                  
-             .filter(entry -> entry.getValue() == 1L)  
-             .map(entry -> entry.getKey())              
-             .findFirst().get();   
-             
-       System.out.println(result+" ");  
+        String str = "repeated";
+        Character ch = str.chars().mapToObj(c-> (char)c).collect(Collectors.groupingBy(Function.identity(), LinkedHashMap:: new , Collectors.counting()))
+            .entrySet().stream().filter(e->e.getValue()==1L).map(e-> e.getKey()).findFirst().get() ;
+        System.out.println("first non repeating char : " + ch); 
 
        //====================================
      List<Integer> list = Arrays.asList(71, 18, 42, 21, 67, 32, 95, 14, 56, 87);
